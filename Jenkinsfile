@@ -5,8 +5,8 @@ node {
     // Mark the code checkout 'Checkout'....
     stage 'Checkout'
  
-    // // Get some code from a GitHub repository
-    git url: 'https://github.com/glnreddy/Ansible-jenkins.git'
+    // // Get some code from a GitHub repositoryjenkins.git'
+    git url: 'https://github.com/glnreddy/Terraform-Ansible.git'
 
     // we don't release or ask for user input on pull requests
     pullRequest = env.BRANCH_NAME != 'master'
