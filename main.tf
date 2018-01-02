@@ -9,10 +9,10 @@ resource "google_compute_instance" "default" {
   machine_type = "n1-standard-1"
   zone = "us-central1-b"
 
-  boot_disk {
-    initialize_params {
-      image = "CentOS 7"
-    }
+  disk {
+    source_image = "debian-cloud/debian-8"
+    auto_delete  = true
+    boot         = true
   }
 
   network_interface {
