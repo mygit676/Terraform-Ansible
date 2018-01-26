@@ -1,5 +1,4 @@
 #!groovy
-h3.hudson.cli.UpdateViewCommand
 
 pull_request = false
 
