@@ -21,7 +21,7 @@ job('create_terraform_jobs') {
     textParam 'env_vars', '', 'Multi-line text input containing NAME=VALUE pairs. While not recommend, this is one way to pass auth data eg: `AWS_ACCESS_KEY_ID` & `AWS_SECRET_ACCESS_KEY`'
   }
   scm {
-    github 'savasw89/tf_pipeline'
+    github 'glnreddy/Terraform-Ansible'
   }
   steps {
     dsl {
