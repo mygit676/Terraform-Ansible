@@ -1,4 +1,4 @@
-#!groovy
+
 
 job('create_terraform_jobs') {
   parameters {
