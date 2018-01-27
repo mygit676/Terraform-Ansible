@@ -3,6 +3,7 @@ terraform {
   backend "s3" {}
 }
 
+
 resource "aws_instance" "example"  {
         ami = "ami-f2d3638a"
         instance_type = "t2.micro"
@@ -10,3 +11,4 @@ resource "aws_instance" "example"  {
         Name="terraform-instance"
         }
 }
+
