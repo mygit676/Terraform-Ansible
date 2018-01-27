@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = "${file("/home/jenkins/credentials.json")}"
+  credentials = "${file("/var/jenkins_home/credentials.json")}"
   project     = "My Project2"
   region      = "us-central1"
 }
