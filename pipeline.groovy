@@ -62,10 +62,12 @@ def setup_tf() {
     _sh '''\
       tf_zipfile="terraform_${tf_version}_${tf_arch}.zip"
       tf_url="https://releases.hashicorp.com/terraform/${tf_version}/${tf_zipfile}"
+
       if [ ! -f "${tf_zipfile}" ]
       then
         wget -q "${tf_url}"
       fi
+
       if [ "$(sha256sum ${tf_zipfile} | awk '{print $1}')" = "${tf_sha256}" ]
       then
         if [ ! -x "./bin/terraform" ]
@@ -88,7 +90,16 @@ def fetch_modules() {
 }
 
 def tf_validate() {
-  stage 'validate syntax'
+  stage 'initialize and validate syntax'
+  withEnv(["s3_bucket=$s3_bucket","s3_key=$s3_key"]) {
+    _sh '''\
+      ./bin/terraform init \
+        -backend-config="bucket=${s3_bucket}" \
+        -backend-config="key=${s3_key}/terraform.tfstate" \
+        -backend-config="region=us-east-1" \
+        -backend-config="acl=bucket-owner-full-control"
+    '''.stripIndent()
+  }
   _sh './bin/terraform validate'
 }
 
@@ -152,6 +163,7 @@ def tf_plan(extra_flags='') {
   withEnv(["extra_flags=$extra_flags"]) {
     _sh '''\
       set -o pipefail
+
       ./bin/terraform plan \
         -refresh=true \
         -input=false \
@@ -159,6 +171,7 @@ def tf_plan(extra_flags='') {
         -detailed-exitcode \
         ${extra_flags} \
         2>&1 | tee "terraform.plan.ansi"
+
       echo "exit code: $?"
       echo $? > exitcode.txt
     '''.stripIndent()
@@ -181,6 +194,7 @@ def tf_plan(extra_flags='') {
     else
       echo "Plan status unknown" > "terraform.plan.summary"
     fi
+
     echo -n "Summary: " ; cat "terraform.plan.summary"
   '''.stripIndent()
   
@@ -217,10 +231,12 @@ def tf_apply() {
 
   _sh '''\
     set -o pipefail
+
     ./bin/terraform apply \
       -input=false \
       terraform.plan \
       2>&1 | tee "terraform.apply.ansi"
+
   '''.stripIndent()
 
   _strip_ansi_color "terraform.apply.ansi", "terraform.apply.txt"
