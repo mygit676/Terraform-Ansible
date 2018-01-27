@@ -1,5 +1,4 @@
 
-
 job('create_terraform_jobs') {
   parameters {
     stringParam 'gh_owner', '', 'User or organization for the github repo, eg: https://github.com/OWNER/repo'
