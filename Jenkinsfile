@@ -3,7 +3,8 @@ pipeline {
   stages {
     stage('checkout') {
       steps {
-        git(poll: true, changelog: true, url: 'git@github.com:mygit676/Terraform-Ansible.git', branch: 'master', credentialsId: '97ae1022-bf5f-434d-b555-e77f28abf2ce')
+        git(poll: true, changelog: true, url: 'git@github.com:mygit676/epic-terraform.git', branch: 'master', credentialsId: '107cf002fb3b762f13981d19c17a3a04014629d3')
+
       }
     }
   }
